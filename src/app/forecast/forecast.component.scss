@@ -1,4 +1,10 @@
 .forecast-container {
+
+    &_details {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
    
     &_detail {
         display: grid;
@@ -6,9 +12,18 @@
         align-items: center;
         font-size: 14px;
         color:#767676;
+        padding: 0 5px;
         
         img {
             height: 4em;
         }
+
+        &:hover  {
+            background-color: rgba(72,72,74,.05);
+        }
+    }
+
+    .text-align-right {
+        justify-items: end;
     }
 }
