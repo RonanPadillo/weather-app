@@ -1,0 +1,58 @@
+<div class="weather-wrapper">
+       <div class="weather-wrapper-banner">
+            <div class="weather-wrapper-banner_container">
+                <div class="weather-wrapper-banner--search">
+                    <input type="text" [(ngModel)]="cityName" value="Cebu" class="weather-wrapper-banner--search" placeholder="Search city">
+                    <button (click)="searchCityName()" >Search</button>
+                </div>
+                <div class="weather-wrapper-banner--action">
+                    <div id="selected" style="left: 72pt;" class=""></div>
+                    <div class="option">Imperial: °F, mph</div>
+                    <div class="option">Metric: °C, m/s</div>
+                </div>
+            </div>
+            <span >{{this.error}}</span>
+       </div>
+       <div class="weather-wrapper-content" *ngIf="cityWeather as data"
+       style="padding: 1em;">
+            
+            <div class="weather-wrapper-content_daily">
+                <div class="weather-wrapper-content_daily--date" style="font-weight: 600; font-size: 12px; color: #ec6e4c">
+                    {{dtTimezone}}
+                </div>
+                <div class="weather-wrapper-content_daily--city" style="font-size: 32px; font-weight: 600;">
+                    {{data.name}}, {{data.sys.country}}
+                </div>
+                <div class="weather-wrapper-content_daily--temperature">
+                    <div class="weather-wrapper-content_dailay--temperature-image"
+                    style="display: flex;
+                    align-items: center;">
+                        <img src="{{imageUrl}}" alt="Weather image">
+                        <div style="
+                        display: flex;
+                        flex-direction: column;
+                        grid-gap: 2px;
+                        ">
+                            <span style="text-transform: capitalize;font-weight: 700;">{{data.weather[0].description}}</span>
+                            <span style="text-transform: capitalize;font-size: 12px">Feels like {{data.main.feels_like}}°C.</span> 
+          
+                        </div>
+                    </div>
+                    <div class="weather-wrapper-content_dailay--temperature-degree">
+                        <span style="font-size: 70px;">{{data.main.temp}}°C</span>
+                    </div>
+                </div>
+                <div class="weather-wrapper-content_daily--feels">
+                   
+                </div>
+                <div class="weather-wrapper-content_daily--details">
+                    <span style="text-transform: capitalize;">Humidity: {{data.main.humidity}}10%</span>
+                    <span style="text-transform: capitalize;">Pressure: {{data.main.pressure}}hPa</span>
+                </div>
+            </div>
+            <div class="weather-wrapper-content_forecast" >
+                <app-forecast [data]="weekForecastData" [city]="cityName"></app-forecast>
+            </div>
+       </div>
+       
+</div>

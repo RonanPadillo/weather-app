@@ -1,0 +1,11 @@
+<div class="forecast-container">
+    <h3>5 days Forecast</h3>
+    <ul class="forecast-container_details" style="list-style-type: none;">
+        <li  class="forecast-container_detail" *ngFor="let forecast of weekForecastData">
+            <span>{{forecast.dt_txt | date: 'EEE, MMM dd'}}</span>
+            <img src="http://openweathermap.org/img/wn/{{forecast.weather[0].icon}}@2x.png" alt="Forecast image">
+           <span>{{forecast.main.temp_min | number:'1.0-0'}} / {{forecast.main.temp_max | number:'1.0-0'}}°F</span> 
+           <span>{{forecast.weather[0].description}}</span>
+        </li>
+    </ul>
+</div>
