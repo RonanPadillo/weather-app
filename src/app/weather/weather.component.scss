@@ -92,6 +92,17 @@
 
         &_daily {
             grid-area: daily;
+
+            &--details {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+
+                &-detail {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
         }
 
         &_forecast {
