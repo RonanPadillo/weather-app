@@ -2,15 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../services/weather.service';
 import { CommonModule } from '@angular/common';
 import { ForecastComponent } from "../forecast/forecast.component";
-import { FormsModule } from '@angular/forms';
-import { of } from 'rxjs';
+import { FormControl, FormsModule, NgForm,  } from '@angular/forms';
+import { forkJoin, of } from 'rxjs';
+import { subscribe } from 'diagnostics_channel';
 
 @Component({
     selector: 'app-weather',
     standalone: true,
     templateUrl: './weather.component.html',
     styleUrl: './weather.component.scss',
-    imports: [CommonModule, ForecastComponent, FormsModule]
+    imports: [CommonModule, ForecastComponent, FormsModule,]
 })
 
 export class WeatherComponent implements OnInit{
@@ -24,6 +25,12 @@ export class WeatherComponent implements OnInit{
   imageUrl: any;
   cityName: any;
   error: any;
+  isDegree: boolean = false;
+
+  constructor(
+    private weatherService: WeatherService,
+  ){}
+
 
   staticCity = {
     "coord": {
@@ -249,57 +256,50 @@ export class WeatherComponent implements OnInit{
     }
   }
 
-  constructor(
-    private weatherService: WeatherService,
-  ){}
-
   ngOnInit(): void {
 
-  
-        this.cityWeather = this.staticCity;
-        this.dtTimezone = this.getLongFormatUnixTime(this.staticCity);
-        this.imageUrl = 'http://openweathermap.org/img/wn/'+ this.cityWeather.weather[0].icon +"@2x.png";
-        this.error = "";
 
-        this.weekForecastData = this.staticForecast;
-        this.weekForecastData = this.weekForecastData.list
-
-  }
-
-  searchCityName() {
-
-    if(this.cityName == null) {
-     this.error = 'No city found';
-      return;
-    }
-    this.weatherForecast();
-  }
-
-  weatherForecast() {
+    this.cityWeather      = this.staticCity;
+    this.dtTimezone       = this.getLongFormatUnixTime( this.cityWeather);
+    this.imageUrl         = 'http://openweathermap.org/img/wn/'+ this.cityWeather.weather[0].icon +"@4x.png";
+    this.weekForecastData = this.staticForecast;
+    this.weekForecastData = this.weekForecastData.list
     
-    this.weatherService.getWeather(this.cityName)
-      .subscribe({
-        next: (res) => {
-          this.cityWeather = res;
-          this.dtTimezone = this.getLongFormatUnixTime(res);
-          this.imageUrl = 'http://openweathermap.org/img/wn/'+ this.cityWeather.weather[0].icon +"@4x.png";
-          this.error = "";
-        },
-        error: ((err) => {
-      
-          if(err.error.cod ==='404') {
-            this.error = 'City not found';
-          }
-        })
-    })
+    // if(this.city === 'Cebu') {
 
-    this.weatherService.getForecast(this.cityName)
-    .subscribe({
+    //   this.weatherForecast(this.city, this.isDegree)
+    // }
+  }
+
+  degree() {
+
+    //this.weatherForecast(this.cityName, this.isDegree);
+  }
+  
+  onSubmit(f: NgForm) {
+   
+    // this.cityName = f.value.cityName
+    // this.weatherForecast(f.value.cityName, this.isDegree);
+  }
+
+  weatherForecast(name: any, degree: any) {
+
+    const weather  = this.weatherService.getWeather(name, degree);
+    const forecast = this.weatherService.getForecast(name, degree);
+
+    forkJoin([weather, forecast]).subscribe({
       next: (res) => {
-        this.weekForecastData = res;
+        this.cityWeather      = res[0];
+        this.dtTimezone       = this.getLongFormatUnixTime( this.cityWeather);
+        this.imageUrl         = 'http://openweathermap.org/img/wn/'+ this.cityWeather.weather[0].icon +"@4x.png";
+        this.weekForecastData = res[1];
         this.weekForecastData = this.weekForecastData.list
-      }
-    })
+        this.error            = "";
+      },
+      error:((err) => {
+
+      })
+    });
   }
 
   //format date and timezone for the current city

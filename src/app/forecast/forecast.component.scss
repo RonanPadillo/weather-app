@@ -1,4 +1,6 @@
 .forecast-container {
+    color: #535353;
+    background-color: #fff;
 
     &_details {
         list-style-type: none;
@@ -8,6 +10,7 @@
    
     &_detail {
         display: grid;
+        border-bottom: 1px solid #eee;
         grid-template-columns: 1fr 1fr 1fr 1fr;
         align-items: center;
         font-size: 14px;

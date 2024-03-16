@@ -27,7 +27,6 @@ export class ForecastComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck() {
-
     this.weekForecastData = [];
     this.weekForecast(this.data)
   }
