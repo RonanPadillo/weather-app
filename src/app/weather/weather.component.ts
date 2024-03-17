@@ -34,7 +34,7 @@ export class WeatherComponent implements OnInit{
 
   ngOnInit(): void {
 
-     this.weatherForecast(this.city, this.isDegree);
+    //  this.weatherForecast(this.city, this.isDegree);
   }
 
   degree() {
