@@ -10,14 +10,17 @@
         </div>
         <div class="weather-wrapper-container--action">
             <div class="weather-wrapper-container--button">
+                <div class="weather-wrapper-container--button-temp">
+                    °C / °F
+                </div>
                 <label class="switch" (change)="degree()">
                     <input  [(ngModel)]="isDegree"  type="checkbox">
                     <span class="slider round"></span>
                 </label>
             </div>
         </div>
+        <span class="weather-wrapper-container--error">{{error}}</span>
     </div>
-
     <div class="weather-wrapper-content" *ngIf="cityWeather as data"
     style="padding: 1em;">
         
@@ -33,12 +36,12 @@
                     <img src="{{imageUrl}}" alt="Weather image">
                     <div class="weather-wrapper-content_daily--temperature-image_container">
                         <span class="weather-wrapper-content_daily--temperature-image_container--description">{{data.weather[0].description}}</span>
-                        <span class="weather-wrapper-content_daily--temperature-image_container--feels-like">Feels like {{data.main.feels_like}}°F.</span> 
+                        <span class="weather-wrapper-content_daily--temperature-image_container--feels-like">Feels like {{data.main.feels_like}}°{{temp}}.</span> 
         
                     </div>
                 </div>
                 <div class="weather-wrapper-content_daily--temperature-degree">
-                    <span>{{data.main.temp}}°F</span>
+                    <span>{{data.main.temp}}°{{temp}}</span>
                 </div>
             </div>
             <div class="weather-wrapper-content_daily--details">
@@ -53,8 +56,8 @@
             </div>
         </div>
         <div class="weather-wrapper-content_forecast" >
-            <app-forecast [data]="weekForecastData" [city]="cityName"></app-forecast>
+            <app-forecast [data]="weekForecastData" [city]="cityName" [temp]="temp"></app-forecast>
         </div>
     </div>
-       
+    <div class="weather-wrapper-footer"><strong>Created by: </strong> Ronan Padillo</div>
 </div>

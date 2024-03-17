@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 export class ForecastComponent implements OnInit, DoCheck {
   @Input() data : any = [];
   @Input() city : any;
+  @Input() temp : any;
 
   cityWeather     : any;
   cityForecast    : any;
@@ -33,7 +34,7 @@ export class ForecastComponent implements OnInit, DoCheck {
 
   weekForecast(data: any) {
 
-    for(let i = 0; i < data.length; i = i + 1){
+    for(let i = 0; i < data.length; i = i + 8){
 
       this.weekForecastData.push(data[i])
     }
