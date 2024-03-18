@@ -97,6 +97,10 @@ body {
                         }
                     }
                 }
+
+                &-no-content {
+                    flex-direction: column;
+                }
     
                 &-footer {
                     justify-content: center;

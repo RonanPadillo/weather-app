@@ -1,0 +1,42 @@
+.weather-wrapper-no-content {
+    display: flex;
+    align-items: center;
+    padding: 5em;
+    position: relative;
+    justify-content: center;
+
+    &_label {
+        display: flex;
+        flex-direction: column;
+        z-index: 1;
+
+        &--title {
+            color: #48484a;
+            font-size: 4em;
+            font-weight: bolder;
+        }
+
+        &--sub-title {
+            color: #ec6e4c;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+    }
+
+    &_image {
+        position: absolute;
+        left: 3em;
+        top: 29px;
+    }
+
+    @media only screen and (max-device-width: 700px) and (max-width: 700px){
+    
+      
+    }
+    
+    @media only screen and (max-device-width: 450px) and (max-width: 450px) {
+
+       
+    }
+}

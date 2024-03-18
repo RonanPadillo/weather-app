@@ -2,18 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../services/weather.service';
 import { CommonModule } from '@angular/common';
 import { ForecastComponent } from "../forecast/forecast.component";
-import { FormsModule, NgForm,  } from '@angular/forms';
-import { forkJoin} from 'rxjs';
+import { FormsModule, NgForm, } from '@angular/forms';
+import { forkJoin } from 'rxjs';
+import { NoConentComponent } from '../no-conent/no-conent.component';
 
 @Component({
-    selector: 'app-weather',
-    standalone: true,
-    templateUrl: './weather.component.html',
-    styleUrl: './weather.component.scss',
-    imports: [CommonModule, ForecastComponent, FormsModule,]
+  selector: 'app-weather',
+  standalone: true,
+  templateUrl: './weather.component.html',
+  styleUrl: './weather.component.scss',
+  imports: [CommonModule, ForecastComponent, NoConentComponent, FormsModule,]
 })
 
-export class WeatherComponent implements OnInit{
+export class WeatherComponent implements OnInit {
 
   city = 'London';
   cityWeather: any;
@@ -24,28 +25,30 @@ export class WeatherComponent implements OnInit{
   imageUrl: any;
   cityName: any;
   error: any;
-  isError : boolean = false;
+  isError: boolean = false;
   isDegree: boolean = false;
   temp: any;
+  testRestult : any;
 
   constructor(
     private weatherService: WeatherService,
-  ){}
+  ) { }
 
   ngOnInit(): void {
 
-    //  this.weatherForecast(this.city, this.isDegree);
   }
 
   degree() {
 
-    const city = typeof this.cityName == "undefined" ? this.city : this.cityName;
-    this.weatherForecast(city, this.isDegree)
+    if (typeof this.cityName == "undefined" || this.error != "") {
+      return
+    }
+    this.weatherForecast(this.cityName, this.isDegree)
   }
-  
+
   onSubmit(f: NgForm) {
 
-    if(f.value.cityName != "") {
+    if (f.value.cityName != "") {
       this.cityName = f.value.cityName
       this.weatherForecast(f.value.cityName, this.isDegree);
       this.error = "";
@@ -55,30 +58,27 @@ export class WeatherComponent implements OnInit{
   }
 
   weatherForecast(name: any, degree: any) {
-    
-    if(typeof name == "undefined") {
+
+    if (typeof name == "undefined") {
       return
     }
 
-    const weather  = this.weatherService.getWeather(name, degree);
+    const weather = this.weatherService.getWeather(name, degree);
     const forecast = this.weatherService.getForecast(name, degree);
 
     forkJoin([weather, forecast]).subscribe({
-      next: (res) => {  
+      next: (res) => {
         this.temp = this.isDegree ? 'F' : 'C';
-        this.cityWeather      = res[0];
-        this.dtTimezone       = this.getLongFormatUnixTime( this.cityWeather);
-        this.imageUrl         = 'http://openweathermap.org/img/wn/'+ this.cityWeather.weather[0].icon +"@4x.png";
+        this.cityWeather = res[0];
+        this.dtTimezone = this.getLongFormatUnixTime(this.cityWeather);
+        this.imageUrl = 'http://openweathermap.org/img/wn/' + this.cityWeather.weather[0].icon + "@4x.png";
         this.weekForecastData = res[1];
         this.weekForecastData = this.weekForecastData.list
-        this.error            = "";
+        this.error = "";
       },
-      error:((err) => {
-      
-        if(err.error.cod == "404") {
-         
-          this.error = "City not found " + this.cityName;
-        }
+      error: ((err) => {
+
+        this.error = "City not found " + this.cityName;
         throw err;
       })
     });
@@ -94,11 +94,11 @@ export class WeatherComponent implements OnInit{
     return this.formatUnixTime(epochTime, utcOffsetSeconds, options);
   }
 
-   //format date and timezone for the current city
-  formatUnixTime(epochTime: any, utcOffsetSeconds: any, options={}) {
-  
+  //format date and timezone for the current city
+  formatUnixTime(epochTime: any, utcOffsetSeconds: any, options = {}) {
+
     const date = new Date((epochTime + utcOffsetSeconds) * 1000);
     return date.toLocaleTimeString([], { timeZone: 'UTC', ...options });
   }
-  
+
 }

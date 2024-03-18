@@ -59,5 +59,8 @@
             <app-forecast [data]="weekForecastData" [city]="cityName" [temp]="temp"></app-forecast>
         </div>
     </div>
+
+    <app-no-conent *ngIf="!cityWeather"></app-no-conent>
+
     <div class="weather-wrapper-footer"><strong>Created by: </strong> Ronan Padillo</div>
 </div>

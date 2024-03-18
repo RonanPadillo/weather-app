@@ -158,6 +158,11 @@
         }
     }
 
+    &-no-content {
+        display: flex;
+        align-items: center;
+    }
+
     &-footer {
         display: flex;
         justify-content: flex-end;
